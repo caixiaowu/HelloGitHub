@@ -1,0 +1,610 @@
+1 Trunk目录 http://tc-svn.tencent.com/isd/isd_happyfarm_rep/isd_qzoneappbase_proj/trunk
+  智能设备sdk http://tc-svn.tencent.com/basic/basic_ubiq_rep/ubiq_proj/trunk
+
+			
+2 公司地址 深圳市南山区科技中一路万利达大厦12楼
+
+3 xshell接收文件rz -E
+		发送文件sz filename
+
+4 查看机器是64位 uname -a
+	uname -a
+	Linux pmx002**.**.**  2.6.32-71.el6.x86_64 #1 SMP Wed Sep 1 01:33:01 EDT 2010 x86_64 x86_64 x86_64 GNU/Linux
+	x86_64表示64位机器
+
+	uname -a
+	Linux pmx0**.**.**    2.6.9-5.ELsmp #1 SMP Wed Jan 5 19:30:39 EST 2005 i686 i686 i386 GNU/Linux
+	i686表示32位机器
+	i686 只是i386的一个子集,支持的cpu从Pentium 2 (686)开始,之前的型号不支持.
+
+5 svn: Can't convert string from 'UTF-8' to native encoding:
+	locale:
+	export LC_ALL=en_US.UTF-8
+	export LANG=en_US.UTF-8
+	export LANGUAGE=en_US.UTF-8
+
+6 unzip linux上解压缩zip文件
+ 
+7  两个环境： 1 dv-net
+			  2 idc(Internet Data Center)即互联网数据中心.
+			  一般需要通过跳板机登陆的都为idc环境(一般的用户名密码为user_00 isd!@#user)
+			  通过代理跳板机 http1.1 172.23.30.16:80登陆idc环境
+
+	测试机 编译机 预发布机 都是idc环境下按照不同功能来分类的机器
+	开发机则是在dv-net环境，关了很多端口和服务
+	openapi管理端工具:             10.130.2.105 user_00 isd!@#user 部署api工具的php跟html
+	新的管理端工具：			   10.133.4.9 /data/release/page/admin/web/openapi
+	openapi管理端工具cgi存放机器:  10.198.11.76 user_00 isd!@#user 部署api工具具体的cgi
+												root open@isd
+	编译机: 					   10.6.223.56 	appbase appbase
+	开发机: 					   10.12.198.51 root账号密码root/open@isd
+							 		     		自己开发账号密码zifengcai bingfeng
+							 	   10.12.198.50 root open@isd
+							 	   				user_00 isd!@#user
+							 	   				zifengcai bingfeng
+							 	   10.123.14.29 root itcloud@123
+							 	   				zifengcai	xw2436246!
+							 	   10.123.14.34 root itcloud@123
+							 	   				zifengcai	bingfeng
+	测试机：					   10.137.152.88 user_00 isd!@#user
+												 root kingbiwu@isd
+								   172.27.0.91   root temp@@pwd
+								   10.130.128.170  root open@isd
+
+8 helper账号
+	QQ账号：1559432508
+			open@isd
+	RTX账号：openapihelper
+			 8888
+	qq物联helper
+		743606819
+		qqconnect
+
+9 看qz的配置文件usr/local/services/qzhttp-6.0/conf config.xml找到cgi的放置地点(/data/release/platform/cgi-bin/appstage)
+
+10 openapi管理端重启qzhttp不需要root权限，直接sudo /usr/local/qzhttp/admin/restart.sh all
+   sudo -l 不用su重启qz
+
+11 cgi权限
+ 	站内(qq空间，较少)
+ 	互联网站(网站上的qq互联)
+ 	互联移动(移动端的qq互联)  
+
+12 fatal error: error closing /tmp/ccsdc7Zt.s: No space left on device 
+提醒tmp文件夹下空间不足了，不能满足编译的需求，这个时候可以：
+		mkdir  /abc/tmp/
+		export TMPDIR=/abc/tmp/
+
+13 根卷下有些文件正在被程序读取，删除了之后相关的进程还在，这些进程占用的空间无法被释放，需要杀掉才行。
+		lsof | grep deleted
+
+14 服务器环境在/usr/local/services/
+	cgi环境在/data/release/xxx
+
+15 编译机环境：
+	1 pt进入platform目录
+	2 svn更新命令 svnup或者svntools -u
+	3 编译命令 build clean all
+
+16 ~/.bashrc
+命令别名    alias tpt="cd /data/zifengcai/test/trunk/application/platform"
+默认提示符  PS1='\u:\w $' 
+
+17 各种系统
+		1 yun.isd.com 发布系统
+		2 http://os.isd.com/pass/query   ISD运维服务中心
+			临时root密码申请
+			查询ip机器负责人
+		3 jm.isd.com  智能监控
+		4 m.isd.com 查看模调
+		5 qconnadmin.oa.com qq互联管理后台
+		6 webdata.isd.com webcenter 通过域名查机器
+
+18 下发配置直接替换，隔一段时间回去读配置不需要重启。
+
+19 构造包
+https://172.27.0.91/v3/user/get_info?openid=AF3BE406C458F9BA601A897179BB89FF&openkey=688D33056F2A8F334211530EBA31C83A&pf=mapp_pc&appid=222222
+
+curl -i "http://10.137.152.88:9080/cgi-bin/openapi/get_app_inst_cnt?appid=10883&openid=000000000000000000000000053F6A10&openkey=C66F15A09FB0FB54883F011BB8FEB0BF&fopenids=0000000000000000000000007E5A9BD6" -b "uin=593579000; skey=TlQzaeDUvi"
+
+20 添加查看白名单(用管理端工具，不要用命令行了)
+curl "http://10.185.8.28/cgi-bin/mapp/mq_whitelist_get?appid=1103073121"
+curl "http://10.185.8.28/cgi-bin/mapp/mq_whitelist_set" -d "appid=1000001286&uins=297295975"
+
+21 l5.oa.com管理系统上根据l5 id查询后端机器
+查看L5./L5GetRoute1 62211 131072 10 无状态的为./L5GetRoute
+注册L5./route_regist input modid cmdid ip port 
+删除L5./route_delnode modid cmdid ip port
+
+22  server busy
+	很可能是因为后端服务器被缩容
+		1 先到api_gw_openapi_v3-1.0/etc/com_config.xml查询cgi名称对应的l5
+		2 再到管理系统查询l5对应的机器ip是否跟路由注册的ip一致
+		3 如果不一致的则在l5_protocol_32os-1.0/bin下用l5工具注册路由信息
+	在测试环境下，就算配置了com_config.xml，但是没有dnsagent，所以要手动配置l5
+
+23 测试环境172.27.0.91---内部openapi接口机
+   测试环境172.27.0.91---对应的外网地址119.147.19.43
+
+24 com_config.xml
+	1 url重定义
+	2 L5_ID
+	3 roleid
+
+25  cgi log:记录各个cgi的log(/usr/local/qzone-v3.0)
+	api_gw log:主要是转发、请求、校验、网络问题
+
+26 1 ywts获取launch.ica 
+   2 securtCRT运行脚本,获取动态密码
+   		./login.exp ip 
+   3 然后到Xshell登陆
+
+27 校验md5值：md5sum document
+
+28 /usr/local/qzone_v3.0/etc/open.ini open_oidb接口配置l5
+	与com_config.xml的区别在于：
+	1 外部应用通过url访问服务器cgi1，经由api_gw访问com_config.xml，得到cgi1的服务器ip
+	2 如果cgi1需要调用到open_oidb接口cgi2，则到open.ini读取cgi2的服务器ip
+
+29 生成code 
+	10.137.152.88
+	/data/zifengcai/tools/uin_tskey_appid_2_code/get_auth_code  Uin Skey AppID
+
+30 oidb返回-105 ptloginid
+
+31 确认机器是否是要发的ip
+	1 先代码里找到模调id，不在main就是init函数
+	2 m.isd.com上查询模调
+	3 比对ip
+
+32 发cgi
+   测试：将cgi放到/data/release/platform/cgi-bin(其实应该根据模块发到不同地方)
+   ars发布：注意路径软连接
+   发server：/usr/local/services/...
+
+33 超时时间需要注意，读取哪个配置文件的那个字段
+
+34 编写cgi：
+	1 qzhttp起不来，很可能是读不到配置文件，看代码找出读的配置路径
+	2 undefined symbol: _ZNK4Json5Value5asIntEv -->json库没有
+	3 如果需要编译成二进制文件进行调试，可在Makefile文件中将#C_FLAGS_EX=-DEXE前面的注释取消即可
+
+35 url需要传入的参数
+	appid、openid、openkey(token)、pf、sig(如果是https就不用sig)
+	http://119.147.19.43/v3/qqclient/dianping_reddot?appid=200002&openid=86C72E87D7DD5A979FDE5AB2CA904907&access_token=BACBB4CB8BF92D5B51A2C05A4626E894&pf=qzone&sig=xxx
+	可到http://opensns.cm.com/openapi/verify_token.htm验证token是否正确
+
+36 每次更改至少把openapi_v3编译一遍
+
+37 https访问不要证书校验，因为我们没有证书
+
+38 mqzone api_gw 直接在taskserver配置中替换ip，进行cgi访问，在88的机器上是不需要有trans_openinfod这个cgi的，mqz与open 		api_gw是不同的工作模式，后者需要读取配置替换cgi路径，查找l5得到ip
+ 	curl -i "10.137.152.88:8081/cgi-bin/appstage/trans_openinfo?appid=10883&ref=kfpt&appkey=9f58423d54bf4d29b2991f5b831cd9c8&openid=0000000000000000000000002329FBEF&accesstoken=50B291ADBAFD619987F82C727FC9F244&uin=2840740872&pf=qzone&a2key=D0331741C3BB737C78B36CD34359F8C9D3CEFE9C1F39E5642B92F88A62C0073B891C64AA38F90202BE6C1452B33594118BBD9500A2811F8946A8A0FA13076C72F9AC21D840FE2CA8"
+ 	比如这个
+ 	http://10.137.148.236:8080/cgi-bin/appstage/getapptype
+ 	1 访问内部接口必带两个参数是ref、appkey(10.137.148.236 /usr/local/services/api_gw_mz-1.0/etc/ref_appkey_config.xml)
+ 	2 mqzone内部接口不带登陆态
+ 	3 访问流程 接口机10.137.148.236,10.129.136.93,api_gw校验ref和appkey，如果通过则放行，taskserver(/usr/local/services/taskserver_mz-1.0/etc/api_config.xml)获取l5跳到cgi放置的机器
+ 	4 还需要对访问接口的ip做放行 配置在mqzone_cgi机器10.185.8.28 /usr/local/qzone_v3.0/etc trans_openid_uin_authlist.xml
+
+39 验证接入的openapi是否正确 直接到172.27.0.91 /home/user_00/1.sh，修改脚本机器ip和cgi名字，然后到/usr/local/services/api_gw_openapi_v3-1.0/log 查看log
+
+40 curl使用方法
+	1 -i, 返回HTTP头部    
+	2 -b, 把上次的cookie信息追加到http request里面去
+	3 -A 伪造浏览器信息(User-agent)
+	4 -x 指定http访问所使用的proxy服务器及其端口
+	5 -k 不带校验证书
+	6 -d post
+
+41 
+curl -i "http://10.137.152.88:8095/user/get_app_friends?appid=100782687&openid=penkey=9E9ABA860F5AA9898DF0CDEA5A22F0F0&flag=1&token=a89024baa3ca37bd283ecb797724ff424bfaf9b0965f670b52d7d149030871df" -b "uin=593579000; skey=TaSW95qCi7"
+返回 "ret":-69,"msg":"internal error
+解析包错误，替换/usr/local/services/api_gw_openapi_v3-1.0/bin/api_gw_ip
+
+42 https走nginx
+	http走api_gw_openapi
+	open login /usr/local/services/api_gw_openapi_v3-1.0/etc/urlconfig.xml
+	<openid_config valid="1">
+        <l5mod>66440</l5mod>
+        <l5cmd>131072</l5cmd>
+        <timeout_ms>100</timeout_ms>
+    </openid_config>
+
+43 openlogin会进行openid转uin，如果是直接访问cgi不通过apigw的话就必须要带cookie才能解析出uin，-b是分号隔开
+curl -i "10.137.152.88:9080/cgi-bin/openapi/get_user_device_status?appid=10883&openid=000000000000000000000000939B8B51&openkey=4310CE161A50F40E96FD44A0901B65AA&din=9f58423d54bf4d29b2991f5b831cd9c8&pf=qzone" -b "uin=3046440497;skey=T33FWHKeGX"
+
+44 88上将dnsagent kill掉，然后手动配置l5到测试环境。用完后把dnsagent重启即可。
+
+45 src/app_info_interface.cpp:102: undefined reference to `oauth_sign_hmac_sha1'
+   src/app_info_interface.cpp:110: undefined reference to `oauth_url_escape'
+	makefile加上依赖
+	BASED  =    \
+             OAUTH\
+
+ 46 sh -x 执行脚本
+
+ 47 新增加的cgi，除了ars发布外，还需要发布qz的config.xml 文件id 101706(mqzone)
+ 																106548(openapi_v3)
+
+ 48 fgets,注意返回的是字符串+\n+\0
+
+ 49 绝对路径 crontab -e   
+
+ 50 验证openid的节口	is_login
+
+51 mqzone cgi发布流程
+	1 cgi通过ars发布到mqzone后端机器 10.185.8.28和10.177.141.41
+	2 下发qzhttp配置到10.185.8.28和10.177.141.41
+	3 下发taskserver配置到mqzone接口机
+		10.137.148.236
+		10.129.136.93
+		172.27.14.19
+		10.130.24.140
+
+52 Transfer-Encoding: chunked 需要设置为0，device_proxy现在不支持
+
+53 OIDB接口0x711 验证OpenID和OpenKey或AccessToken
+   对应open_oidb_api.h函数VerifyOpenidOpenkeyV2
+   统一对外接口为is_login(wiki上可以查到)
+
+54 openid转换qq的接口 trans_openinfo.cpp
+	http://tapd.oa.com/AppBase/wikis/view/trans_openinfo%2525E5%252592%25258Ctrans_openid_uin%2525E6%252596%252587%2525E6%2525A1%2525A3
+
+55 用户授权是给app授权，在授权页面有cgi列表，这样就完成app访问这些cgi的第一步
+	在开平后台真正对app使用cgi进行授权完成第二步
+
+56 cgi只是个壳，出问题的时候首先查看cgi的log看访问server的L5有没有出错。
+
+57 Node remains in conflict告诉svn冲突解决然后手动恢复文件
+	svn resolved
+	svn revert sandwich.txt
+
+58 发包 curl -b cookies 加空格！-b "uin=593579000; skey=Czf2OzFOt"
+
+59 发oidb配置spp_oiserver.xml需要修改四个地方
+查看log
+/usr/local/services/spp_open_oidb-2.3/client/open_oidb/bin> ./appwork_stat -f stat_file -l -c
+1 看spp_worker.log
+2 看统计工具appwork_stat
+3 看oidb模调http://m.isd.com/app/mic2/index.php?tab=tab-b&area=sz&searchType=1&date=2014-10-14&hourA=14&moduleId=168285&componentId=169717&masterId=226000034&slaveId=238000009&apiId=166000002
+
+60 访问cmlb返回-916，如果已经在cmlb.server.com上申请过权限，则有可能是因为cmlb api的版本过老导致，需要更新cmlb版本。
+更换后问题建议用CMLB_V2_ErrMsg打印出详细出错信息
+	1 返回-7 
+		system_id填错，cmlb的appid，如果是10000以下system_id都是2
+		测试环境是414，其他暂时都是1
+	2 替换sys1_cmlb_client_api.conf
+
+61 抓包sudo tcpdump -iany -Xlnps0 port 11000看发出来
+sys1_cmlb_client_api.conf; fileId：66402; 文件描述：open oidb cmlb的配置文件
+CMLB是Comm Load Balance System的简称，即通用负载均衡系统。
+检查你传入的appid是否正确：oidb的appid是39998， oidb2.0的appid是39990
+：system_id：正式环境中AppID 5000~10000的system_id是2，其它的是1；测试环境的system_id都是414
+
+62 cgi下发配置检查(需要openlogin全量才能验证cgi是否正确调用)
+	1 先到openlogin机器查看下发配置有没core
+	2 使用统计工具10.137.152.15 /usr/local/services/spp_openlogin-1.0/bin ./appwork_stat -f stat_file -l -c
+	3 使用perry工具验证cgi 91上/tmp/perry/Test.sh(需要在91上配置l5) 或者
+		91上sudo tcpdump -iany -Ans0 |grep get_friends_feeds -C 10抓到get请求的参数，然后
+		 curl -k "https://127.0.0.1/v3/health/report_brain_relax?openid=7E2CA1640F6FD0F2CFEA167D0E118A71&openkey=CB9EB5A8CF3302C479EDDFB3EDFE4D42&appid=100584625&pf=qzone"
+		 用-k是https
+
+63 open接入公共返回码说明
+http://wiki.open.qq.com/wiki/%E5%85%AC%E5%85%B1%E8%BF%94%E5%9B%9E%E7%A0%81%E8%AF%B4%E6%98%8E
+
+64 openid转uin
+	10.130.2.105 /data/perry/single_trans_openid2uin
+	./single_trans_openid2uin 101163185 tf.txt tttt 1
+	注意文件格式，如果是dos格式要转成unix，在vi中用set ff查看
+
+	sudo tcpdump -i eth1 host 10.156.3.34 -s0 -x 
+
+65 is_login没有权限
+	首先需要拿到appid、openid、openkey和access_token到管理端验证一下token是何种类型
+	然后开通相应的17分组权限。
+
+66 qq互联网站没有迁移到开平，因此在userapp管理端查不到信息，而在授权管理端有，可以用工具“互联appinfo迁移新老逻辑对比”
+查看
+
+67 level: 3 # 日志级别，0-5，值越小记录的日志越多，默认是3
+	type日志类型，0-4 默认为0.0-循环类型,1-按天日志,2-按小时日志,3-按天循环日志,4-按小时循环日志
+
+68 立体化监控返回码负数的一般为api返回定义在F:\work\Trunk\application\platform\openapi_v3\server\api_gw_openapi\inc
+	如果大于1000一般都是cgi返回。
+
+69 appinfo 应用标志位说明
+	/*app状态*/
+	const	APPINFO_STATE_NULL		 			= 0;				//未分类
+	const	APPINFO_STATE_REGISTER				= 1;				//注册未审核
+	const	APPINFO_STATE_USING					= 2;				//使用中
+	const	APPINFO_STATE_PAUSE					= 3;				//暂停 
+	const	APPINFO_STATE_PREPARE_STOPED		= 4;				//预下线
+	const	APPINFO_STATE_STOPED				= 5;				//正式下线
+	const	APPINFO_STATE_DEVELOP 				= 6;				//开发中
+	const	APPINFO_STATE_TESTING				= 7;				//测试或内侧中
+	const	APPINFO_STATE_ENABLE				= 8;				//预备上线
+	const	APPINFO_STATE_VERIFYING				= 9;				//审核中
+	const   APPINFO_STATE_VERIFYFAIL			=10;				//审核失败
+	const   APPINFO_STAT_SIGN_CONTRACT			=11;				//商务谈判通过，合同已签
+
+	/*opensns专用应用状态*/
+	const	APPINFO_OPENSNS_STATE_NULL		 		= 0;	//未分类
+    const	APPINFO_OPENSNS_STATE_REGING			=1;	    // 未审核,刚注册
+    const	APPINFO_OPENSNS_STATE_VERIFYING			=4;	    // 审核中
+    const	APPINFO_OPENSNS_STATE_VERIFY_SUCC		=5;	    // 审核通过
+    const	APPINFO_OPENSNS_STATE_VERIFY_FAIL		=6;	    // 审核失败
+	const	APPINFO_OPENSNS_STATE_PRE_ONLINE		=8;	    // 预备上线
+    const	APPINFO_OPENSNS_STATE_ONLINE_LAB		=12;	// 上线体验区(实验室)
+    const	APPINFO_OPENSNS_STATE_SIGN_CONTRACT		=20;	// 商务谈判通过,合同已签
+    const	APPINFO_OPENSNS_STATE_ONLINE			=30;	// 已上应用推荐区
+    const	APPINFO_OPENSNS_STATE_ONLINE_XIAOYOU	=50;	// 已上 校友
+    const	APPINFO_OPENSNS_STATE_ONLINE_QZONE	    =60;	// 已上 空间
+    const	APPINFO_OPENSNS_STATE_ONLINE_WEIBO	    =70;	// 已上 微博
+
+70 gdb单步调试 需要将源cpp文件加进来
+   gdb ./test
+   b main
+   r param
+   n 单步调试
+ 
+71 appinfo 用户授权信息 应用授权信息 都会写到tmem里面
+
+72 tcpdump 抓包给wireshark分析
+	sudo tcpdump -i any -s 0 -w xxx.pcap
+	get 包
+	http.request.method=="GET" and http contains "Host: "
+	post 包
+	http.request.method=="POST" and http contains "getapp" 
+
+73 立体化监控的monitor路径
+	/trunk/application/platform/openapi_v3/server/monitor_daemon
+
+74 token type分为openkey和accesstoken
+	其中openkey属于站内，accesstoken包括pc和移动
+
+75 查看linux发行版本cat /proc/version
+
+76 makefile链接库
+	Makefile 连接库文件的方法
+	linux的静态库是以.a结尾的，要连接静态库有两种方法，一种是在编译命令最后直接加上库路径/库名称。例如你的库在绝对目录/lib/libtest.a下面
+你就可以这样来编译
+$(CC) $(CFLAGS) $^  -o $@  /lib/libtest.a
+另外一种方法是，你可以用-L制定库德路径，用-l指定库的名称
+例如库的名称为libtest.a 那么就用-ltest
+
+tcpdump -i any -s0 -A | grep -a -P "POST|GET /[^ ]+ HTTP" | awk -F ' |?' '{print $2}' >3.log
+
+77 grep -R "xx" ./* 递归查找函数、字符
+   
+78 kill -9 `pidof zifengcai`
+
+79 spp服务器框架
+	1 绑定端口，如果是本机发包，记得绑定回环地址(修改service.yaml，重启后不会失效)
+	/usr/local/services/spp_openapi_monitor_daemon-2.3/etc/spp_proxy.xml
+		<entry type="udp" if="lo" port="19888"/>
+	2 路由信息，会根据进程数来random到哪个worker来处理
+	/usr/local/services/spp_openapi_monitor_daemon-2.3/client/openapi_monitor_daemon/conf
+		WORKER_GROUP_NUM = 1
+	3 spp_handle_input
+		对于TCP包的话，一定要注意检查边界
+
+80 玩吧预约送礼物
+	验证的cgi发包
+curl -i "http://172.27.14.71/v3/user/get_gift_info.cgi?openid=F43A11209579521A9111D6471B0AAC84&openkey=355BA191EC1FC4221AB3DA0C4B5980C0&pf=qzone&red_vip=1&fopenids=A553677DFD6AF8AB333FFEAF4B3106F6&gift_type=1&act_id=1&appid=1103560208" -b "uin=284503602; skey=TQSIfbAhvK"
+
+
+81 抓包命令
+	如果抓16进制 -Xlnps0
+	如果是ASCII码 -Ans0
+ sudo /usr/sbin/tcpdump -iany -ns0 dst port 10001 and ip[0x5c:2]=0x0013   -c 9000 | awk '{print $3}' | awk -F '.' '{ip=$1"."$2"."$3"."$4; count[ip]++} END{ for(s in count){ print count[s],s}}'
+
+ 82 ll -t按照时间排序文件
+
+ 83 SNG>[N][开放平台部]>[开平基础服务]>[海纳]>[海纳appinfo数据同步server][逻辑SPP]
+ 海纳模块下一共8台机器，
+ 其中appinfo_push和ssvr_appinfo_push_dts这两个服务只用到两天机器
+ 	10.213.109.199	
+	10.213.123.55
+ haina_data_trans则用到了全部8台(本来5台后来扩容，需要修改权限不能自动扩容)
+
+ 84 应用宝cgi mqz_tap_add_appinfo
+ 编译cgi的时候 需要连接share下的库，因此必须重新编译share下的文件，不能直接编译cgi
+ 下发cgi的时候注意看看cgi有没core
+
+ 85 secureCRT的bug，有时候复制粘贴失灵
+ 	运行脚本RepairCBDChain_修复secureCRT粘贴.exe
+
+ 86 su权限下netstat -nap 抓目的端口 得出进程名
+
+
+ 87 oidb 抓包 sudo tcpdump -i any -Xlnps0 port 10888
+ sudo /usr/sbin/tcpdump -i eth1  -Xnlps0  udp[13:2]=0x860 and port 10888
+
+ 88 应用宝相关
+ spp_haina_trans 现网 haina_data_trans
+ 				测试环境10.137.152.102 /usr/local/services/spp_kid_trans-1.0/
+
+
+89 $ rm haina_proxy\ \(2\).so 需要对空格左右括号转义
+90 securetCRT 中文显示乱码
+	1 设置global配置字符集为UTF-8
+	2 每个session写入配置.bashrc
+		export LANG=zh_CN.UTF-8
+		export LC_ALL=zh_CN.UTF-8  
+91 arm mips x86 三种cpu架构 
+
+92 建议使用Json::Value data而不是jsonPrinter 
+	即使要用也不要使用jsonPrinter.PrintTextValue而使用jsonPrinter.PrintTextValueUTF
+	以免出现不可见字符
+
+93 jce的完整性
+错误信息[2015-01-06 11:43:56][11229]DecodeMsgreadFrom exception msg[require field not exist, tag: 1] file: [src/spp_appwork.cpp:61]
+jce不正确 缺少必要字段
+如果是测试环境 更新server的.so
+
+94 vmstat 3 10 3秒输出一次一共输出10次
+
+95 trans_openid_uin ip权限配置在mqzone cgi机器 /usr/local/qzone_v3.0/etc
+
+96 get_oauth2_token 用oauth1.0的东西换取oauth2.0d的token
+	时间戳是用户登陆的时候下发token的时间，如果出现时间错有问题，需要重新登陆。
+	NTP时间同步报文中包含的时间是格林威治时间，是从1900年开始计算的秒数。
+	现在我们知道了如何设置系统和硬件的时间. 但问题是如果这两个时间都不准确了怎么办? 那么我们就需要在互联网上找到一个可以提供我们准确时间的服务器然后通过一种协议来同步我们的系统时间,那么这个协议就是NTP了. 接下去我们所要说的同步就都是指系统时间和网络服务器之间的同步了
+
+97 测试环境不会自动配置l5，要手动配置。
+
+98 应用宝服务
+	1 set 类似于异地部署，深圳是一个set，上海是一个set
+	2 配置里面是主控ip，类似服务器，返回给服务请求真正的地址
+	3 
+
+99 首先要分清楚媒体文件和编码的区别：文件是既包括视频又包括音频、甚至还带有脚本的一个集合，也可以叫容器；文件当中的视频和音频的压缩算法才是具体的编码。
+	MPG：MPEG编码采用的容器，具有流的特性。里面又分为 PS，TS 等，PS 主要用于 DVD 存储，TS 主要用于 HDTV。
+	VOB：DVD采用的容器格式，支持多视频多音轨多字幕章节等。
+	MP4：MPEG-4编码采用的容器，基于 QuickTime MOV 开发，具有许多先进特性。
+	AVI：音视频交互存储，最常见的音频视频容器。支持的视频音频编码也是最多的
+目前手q音频只支持amr编码
+	视频是h264
+100 ios webview权限在105机器上 /data/release/page/admin/web/openapi/openapi_special_right.php 
+	实际工具在/data/release/page/admin/web/openapi/tools下
+
+101 管理端工具
+	10.130.2.105 /data/release/page/admin/web/openapi
+
+102 找文件的诀窍
+	到编译机上locate 
+	locate admin_device_helper.cpp
+
+103 配置host
+	C:\Windows\System32\drivers\etc
+	10.130.2.105 http://opensns.cm.com/
+
+104 找不到ifconfig的解决方法
+	vi ~.bashrc
+		export PATH=$PATH:/sbin
+
+105 编译oidb出现错误
+	cannot find -ldcapi_cpp-32
+	src里面要有libdcapi_cpp-32.a这个库
+
+106 登陆态 开平/即通
+	skey 0x01(1) 网页ptlogin分配 ptlogin_id=15002107
+	A2key 0x40(08) 手q用户登陆态 ptlogin_id=16
+	clientkey 0x23(35) 设备登陆态ptlogin_id=1300000607
+
+107 
+1 群聊功能 udp包ip端口回包填错
+2 strace 打不开文件(权限) 文件不存在 SegmentFault
+	c)，用strace追踪：ps -ef |grep qqshow_user_showcollection_add 找出pid
+	 sudo /usr/bin/strace -p [pid] -s 1000 -o ~/allen.Log
+	    d)，从strace的输出能看到以下错误：
+	shmget(2469, 165772, 0666)              = 262151
+	shmat(262151, 0, 0)                     = -1 ENOMEM (Cannot allocate memory)
+	shmget(2469, 165772, IPC_CREAT|0666)    = 262151
+	shmat(262151, 0, 0)                     = -1 ENOMEM (Cannot allocate memory)
+	看来是共享内存问题
+	e)，ipcs -m 能看出该keyid的共享内存的nattach很大，找到罪魁祸首了
+	f)，查看代码，原来在进程里面只有shmat，但是没有在适当时候调用shmdt来解除绑定；
+	g)，在适当地方加入shmdt，呵呵，搞定；
+	
+1，谨慎使用static变量；
+2，对于类的成员要注意在构造函数上初始化；而我们代码里面对于类的成员貌似不大喜欢初始化，这有时候会导致问题，而且还比较隐晦；
+3，对于变量值，要注意在适当时候重置初始化
+4，推荐用strace来调试cgi
+5，防止内存泄漏
+
+108 
+	使用base16编解码,将buf用base16编码成可打印字符串,体积增加一倍,反过来字符串用base16解码得到的二进制buf体积缩小一半
+	012f(2个字节) <----> '0','1','2','f'(4个字节)
+	但需要字符串是0-9 A-F的组合
+
+109 找不到某个符号定义
+	1 引用对应的头文件
+	2 引用对应的库文件
+	3 引用对应的命名空间
+
+110 登陆
+Portal Login —— 网页社区统一登录平台（简称Ptlogin），向全公司提供网页业务的登录和验证一站式服务，主要功能包括：统一的登录框，快捷的跳转登录，安全稳定的登录态验证接口，支持业务全球部署。
+skey，lskey
+Client Login —— PC客户端统一登录平台（简称Ctlogin），PC客户端业务登录的解决方案，提供一键登录其它客户端、跳web类业务等特色功能。
+TGTGT，TGT
+Wireless terminal Login —— 移动终端统一登录平台（简称Wtlogin），针对移动无线网络环境，量身打造的一款登录系统，并提供业务透传、消息Push、二维码登录等功能。
+A1,A2
+
+111 
+定义一个指针char *p
+p是指针，值是所指向的地址
+*p是指针所指向地址里面存的内容
+&p是指针变量本身的存储地址
+将指针和指针引用传递给函数时
+指针可以改变所指地址里面存储的内容(通过*p更改)，但不能改变指针指向的地址
+引用就是指针的一个别名，对它进行操作即对变量本身进行操作，既可以改变所指地址的内容，也可以改变所指地址
+
+一些服务器说明
+Qzhttp
+	QZHTTP分为Proxy接入层，CGI控制，Monitor监控三大功能块，
+	负责接入从Internet发过来的海量业务请求，将这些请求分发到各业务CGI进行业务逻辑处理，并监控这些CGI的运行情况。
+
+查询父进程
+	ps -ef | grep app_set_datapoint 
+	UID   PID  PPID  C STIME TTY          TIME CMD 
+	root 7152  7146  0 May06 ?    00:00:05 cgi-bin/smart_device/app_set_datapoint
+	root 14074 7152  0 May06 ?   00:06:19 cgi-bin/smart_device/app_set_datapoint  
+
+
+
+
+
+
+
+
+yun包名     appinfo_push (应用宝通知写流水) (正式环境/usr/local/services/spp_appinfo_push-2.3/)
+服务器目录  appinfo_push_server
+share目录   appinfo_push_end_share
+so名称		appinfo_push_center.so 
+测试环境    10.137.152.102
+放置在
+/usr/local/services/spp_push_end/client/ctlvsvr/lib
+重启的话到bin上重启，多看打印的日志
+/usr/local/services/spp_push_end/bin
+
+yun包名     ssvr_appinfo_push_dts (应用宝通知读流水)
+服务器目录  dts_appinfo_push
+share目录   无
+so名称		ssvr_appinfo_push_dts.so(测试环境是ssvr_appinfo_dts.so)
+测试环境    10.137.152.102
+放置在
+/usr/local/services/ssvr_appbase_dts-1.0/bin
+重启的话到bin上重启
+/usr/local/services/ssvr_appbase_dts-1.0/bin
+
+yun包名     haina_data_trans    (绑定appid和maid)
+服务器目录  spp_haina_data_trans
+share目录   haina_trans_api
+so名称		spp_appwork.so
+测试环境    10.137.152.102
+放置在
+/usr/local/services/spp_kid_trans-1.0/bin
+路由到worker2
+重启的话到bin上重启
+/usr/local/services/spp_kid_trans-1.0/bin
+现网路径/usr/local/services/spp_haina_data_trans-2.3
+
+拉应用详情
+http://10.130.128.170/cgi-bin/appstage/mqz_get_ma_appinfo?ref=kfpt&appkey=9f58423d54bf4d29b2991f5b831cd9c8&pkgname=com.opentest.cy5&via=VIA_PKGNAME
+应用宝qms地址
+预发布环境 http://pre.yybqms.3g.qq.com/webapp_qms/android/searchapp.jsp
+正式环境 http://qms.3gqq.com/android/diffauthor.jsp
+
+
+
+
+各类代码
+	char buf[2048*10] = {0};
+	for (int i = 0; i < send_msg.size(); ++i)
+	{
+		snprintf(buf + i*3, 2048*10, "%02X ", send_msg[i]);
+	}
+
+	API_ERROR("send_msg=%s",buf);

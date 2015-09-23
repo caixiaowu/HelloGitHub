@@ -1,0 +1,477 @@
+值班--2014.07.09
+
+1 微漫关系链接入 appid：1101251773
+获取不到安装应用好友列表
+ {"ret":-3,"msg":"app has no privilege to use this api"}
+ 1 在管理工具上检查授权(注意是哪个分组下的接口，这里开的是移动端1030 user/get_app_friends，而它访问的cgi不对访问了/v3/relation/get_app_friends)
+ 2 172.27.0.91上/
+/usr/local/services/api_gw_openapi_v3-1.0/etc/urlconfig.xml转换pf
+/usr/local/services/api_gw_openapi_v3-1.0/etc/com_config.xml查看cgi接口是否存在
+
+2 节奏大师 更新icon 在管理端两个图标上传工具(qq互联和应用图标)
+在“互联appinfo迁移新老逻辑对比”查询是否属于灰度逻辑，如果是灰度逻辑则使用qq互联登陆(理论上只需上传qq互联图标)
+
+3 应用appid：1101111797 应用中文名：土豪的德州扑克 开通移动支付接口调用权限
+
+4 用户询问合作方用qq登录的方式，登录态可以用在腾讯视频吗？ 不行，qq互联使用token，腾讯视频用skey
+
+5 Appid：801512318反馈登陆图标和分享图标不显示：告知需要将应用在ios或者安卓平台上线才能使用qq互联那边(801512318是微博平台应用)
+
+6 当使用QQ授权（APPID:100468196）时，提示app is closed(100011) :后台查看应用并没有关闭，需要进一步跟踪
+
+7 用户询问web上登陆的应用能否获得openid,openkey和pfkey，如何获得 如果是空间应用，可以通过开发者地址CanvasURL获取，其他的应用可以通过qq互联开发者注册后登陆获取
+
+8 给全名勇士增加调试者白名单。
+
+
+
+值班--2014.07.14
+1 sso返回码查询，应用没通过审核，用调试者账号登陆
+	app状态是否上线(通过审核与否)
+
+2 appid：1101494472 1101500915 1101766949移动支付接口权限
+	100700930 心悦
+
+3 添加白名单1000001241和1000001273
+
+4 /v3/photo/save_pic返回1001 init failed
+
+5 用户345899519登录优酷显示授权失败 返回-303
+
+6 101059327图标出错
+
+7 接口调错user/get_app_friends
+
+8  测试号在测试服很正常，我们测了几天，都是好的，3小时弹框，5小时再弹。
+	第二天再测也是也有，在安全里设置在线时间也成功，设置0成功后重新登录也是弹出的。
+	到正式服就不行了，其他新的QQ也不行？是否和安全沙箱有关系。
+	因为文档里要在本地的hosts里加119.147.126.228 fcm.ieodopen.pengyou.com 
+	正式服玩家不会加吧。
+	测试的时候接口调用有
+	//开启沙箱环境上报数据接口
+	 fusion2.control.enableAntiAddiction();
+	这个的。正
+
+	不会吧(82652547)  (14:20:46)   
+	  式服上我不知道这个还要不要，反正没删。文档里也没说明。
+	pigpeng(彭颖) 07-15 14:32:45
+	请问下 开发商调用防沉迷接口 在测试环境正常  到了正式服后就不弹框了
+	pigpeng(彭颖) 07-15 14:33:00
+	正式服需要将沙箱环境那个接口删除吗？
+	OpenAPIHelper(OpenAPI技术支持) 07-15 16:00:41
+	这个是fusion接口，找一下fysntian或小铁
+
+9 一号药店100318694加入灰度名单中，从qq互联迁移到appinfo，从旧逻辑移到新逻辑(网站互联弹窗显示appname不一致)
+
+10 测试环境更新l5信息is_area_login
+
+11 345899519   哥  这个用户登录优酷显示授权失败 返回-303
+
+12 Hello~请教下，调用/v3/photo/save_pic这个API的时候报了
+{"ret": 1001, "msg": "init failed"}
+openkey=D7CF47576CD7AC80DD16D01C7B561089&pf=qzone&appid=1101235174&openid=7CA10323594B7CB97EB5406BF44C7BDF&pic=AvartarShare_112.png&sig=Oj0yz1aDFzYmaBFpJObGXAzetTg%3D
+
+
+值班--2014.07.28
+
+1 100712329 开818权限
+
+2 helper  有开发商说 登陆应用的时候提示要安装手机qq  这是正常的吗，还说因为这个原因 ios版本的上线遭到拒绝
+  :这个是正常的 现在用qq登陆的都要求安装手q
+
+3 开移动支付权限
+
+4 分享权限 
+appid：1101688182
+mTencent.requestAsync(com.tencent.tauth.Constants.GRAPH_ADD_SHARE, parmas,
+	                    com.tencent.tauth.Constants.HTTP_POST, new BaseApiListener("add_share", true), null) 
+	                    add_share分享到qq空
+	    ---走流程申请权限
+
+5 白名单
+
+6 101128595 返回100044错误 提示非官方正式应用
+	查看md5值是有的并且正确
+	从应用宝重新下载后qq登陆也是报错
+
+
+
+20140805
+1 1101746584  开通 827分组权限
+2  人人比大小 APPID  100627777 
+开心斗地主 APP ID:100650691
+亲，请帮忙开通移动应用调用移动支付接口、的权限，谢谢！
+3 1000000453 开5011权限
+4 开放平台Mqzone接入指引 ref appkey
+5 http://wiki.open.qq.com/wiki/mobile/get_simple_userinfo#top
+  get_simple_userinfo传入的参数oauth_consumer_key(其实是appid)，这命名不能统一一点么
+6 1000000874 qq弹窗的图标没有显示(管理端看是有上传的)清掉qq缓存，图片是存在本地的
+7 默认开启的权限(正规从流程接入)：1011,1050,2010,2020,2030,5004,9072 hosting应用
+8 work_filter输入毛泽东显示为不敏感词，问为什么，这关我什么事啊！
+9 role_info.xml是什么东西
+10 110401 网站应用 用 移动登陆返回110401
+	在平台注册移动应用
+11 图片，清除缓存！！
+
+
+20140813
+
+1 api接口登录，返回app is closed (100011)appid是1101091962
+2 1101440334 1101312144后台查不到授权信息(返回110501)
+curl -i "http://10.185.8.28/cgi-bin/appstage/appright_mng.cgi?appid=1101312144&qz_appkey=4BE80B051BA70D2B2CAE55BE0B443ADD&act=add&role_list=1010" -b "uin=593579000; skey=TlQzaeDUvi"
+
+3 救救那宠物   1101497317    帮开下827分组权限
+
+4 https://graph.qq.com/v3/user/get_pinyin?typeflag=pc&pf=qzone&oauth_consumer_key=100294784&openid=01DE6CF46470427B891AE7F88050412E&fileid=qpy_qqnum_udict0&format=json&userip=10.129.41.17&access_token=8BEEA9E83558FF282CF1D3A4586B702B返回结果：{"ret":-60,"msg":"server busy"}
+经验证，是由于用户发的包太大超过http buffer上限
+OnRecv: APIGW_RTCODE_SYSTEM_ERR: appid=100294784, apiname=/cgi-bin/GetPinYin, CSockClient reach the httpbuf size limit buf size:5242880 recv-len:5242879
+5 健康中心第三方appid授权 qq互联的api report_dringking 需要发apiname2role.txt的配置，明天发
+
+
+
+20140819
+1 https://openmobile.qq.com/v3/health/report_menstrual?oauth_consumer_key=100422627&access_token=CD0495BF580EEC698474F9BDFD37ECEC&openid=509DB64F4670A23AA6C935DEAADAB333&time=1408356222&status=2&pf=qzone&avg_day=29&pregnant_chance=0&start_date=20140818&left_day=25&end_date=20140822&start_date2=20140916&end_date2=20
+
+ {"ret":-73,"msg":"internal error"}
+ 	用户修改了密码导致token失效，重新登陆
+
+2 1101779779 开通移动支付权限
+
+3 1000000749 qq互联显示名称不对，由于安卓跟ios名称不一致导致	
+
+
+20140829
+1 清空用户的授权记录
+QQ:1037443522 
+QQ:1376176990 
+QQ:516800734 
+QQ:738724574 
+QQ:1307713877
+
+
+2 1101767536 移动支付权限
+
+3 多人反应openapi接口超时
+	立体化监控m.isd.com查看 监控应用--openapi调用--应用&接口5分钟--
+
+4 100405338 qq互联登陆提示redirect uri is illegal(100010)
+	1 在查询互联新老逻辑appinfo信息查看是否网站应用，是否回调地址写错
+	2 qq互联修改回调地址，在http://qconnadmin.oa.com/审核通过
+
+5 1000000569 更新图标
+
+6 qq旅游询问点亮图标的接口
+	/user/sogou_flag
+
+5 开平提供不同语言写成的SDK(C++ C#),主要是站内、后台使用，互联sdk李帅主要给andriod，游戏MSDK，在SDK外又封装
+
+
+
+20140911
+1 别踩白块儿：1101479455  帮忙开下827分组权限 
+2  登录授权失败 错误码：110501
+	APP ID:1150002242  
+	curl -i "http://10.185.8.28/cgi-bin/appstage/appright_mng.cgi?appid=1150002242&qz_appkey=a55cd3ec82d354fa109ede1d5f333b01&act=add&role_list=1010" -b "uin=593579000; skey=TtUHvB3DoJ"
+3 访问server busy
+	http://119.147.19.43/v3/user/buy_playzone_item?appid=1101877553&count=1&format=json&itemid=618&openid=5478FD065866D7C094708F8D1A5CA966&openkey=6634FF1E0D89C44C53882C84A7A0E9EE&pf=wanba_ts&zoneid=1&sig=C9QkNqULwraYE%2Ft0Y1AXIVX5BwE%3D
+	测试环境的l5配置错误
+
+4 互联的同学有在吗？    我们这边有个问题问下： 美图秀秀上传图片到相册 （接口:photo/upload_pic）,一般图片上传正常，拼接的大图一直失败，错误码是 5005 (lldb) po retData
+{
+    msg = "\U62b1\U6b49\Uff0c\U5f53\U524d\U4f7f\U7528\U76f8\U518c\U670d\U52a1\U7684\U7528\U6237\U8fc7\U591a\Uff0c\U8bf7\U60a8\U7a0d\U540e\U518d\U8bd5\U3002 \U9519\U8bef\U7801:(AA388-2005)";
+    ret = 5005;
+}
+
+(lldb) po [retData valueForKey:@"msg"]
+
+拉相册的同事一起处理，看了一下主要是超时，我这边已经把超时加长了一些，再观察一下吧
+
+5 iOS 分享图片到空间，在空间里面看到的游戏名称不对，这个会是什么原因？
+	ios的名称没有使用正确的名称，上线应用管理端改过来。 
+
+6 kevinhyqin(秦洪勇) 09-11 15:45:52
+你好，问下有验证openid的节口吗？is_login
+
+7 目前有游戏获取不到游戏内好友，87446204这个好友应该是同玩好友，但是61336248获取不到他
+	appid 1000001387
+		在userapp管理端手动添加
+
+
+
+20140919
+1 1101226009 app管理端查到，api授权管理端没有,没有openapi权限
+	1 openapi官网申请api调用权限
+	2 手动调用cgi赋予权限（appright_mng.cgi）
+	curl -i "http://10.185.8.28/cgi-bin/appstage/appright_mng.cgi?appid=1101226009&qz_appkey=3EB23EBDBB7060F4A89011D8784D5F07&act=add&role_list=1010" -b "uin=593579000; skey=TtUHvB3DoJ"
+ 
+2 1000001389 出现100011错误，ios，必须使用调试者帐号来进行登陆
+
+3 100273020查询开发者id
+
+4 uin转qq号
+	4026908245，4019598624，4026953386
+
+5 qq清除授权信息
+	2196622949
+	1540643772
+	2843858943
+	2978027992
+
+	2747758219
+
+	2363496545
+	2750377720
+	2959706494
+	2065728974
+	2101958358
+	1695378123
+	2940655970
+	2119646436
+	2990826916
+	http://opensns.cm.com/openapi/del_app_byuin.htm
+
+	10.130.2.105/data/perry/clear_app_auth
+
+6 1946963289    QQ欢乐积分操作时，提示未开通农牧场
+ 2946726544  QQ欢乐积分操作时，提示未开通农牧场
+ 2752378695 加工坊欢乐积分商城提示 农牧场未开通
+
+7 appid=1101877545
+ 帮忙授权下health分组下的openapi 
+
+
+2014-10-08
+1 1101226009开启1011权限
+2 appid:1000001286添加白名单 uin:65200762、297295975
+3 开通农场牧场权限
+		2029816445
+		2390206886
+		1804459835
+		2562073247
+		205988807 
+		517638002
+		2776078460
+		2776078460
+		1572123353
+		2486816441
+		2796626491
+		1727107895 
+		2053384861
+		1803044843
+		2923279441
+		996750853
+		……等等
+4 转应用宝id appid:1000001293、1000001092
+5 下发配置:pivos tv盒子视频关注和观看历史CGI
+   com_config.xml
+   role_info.xml
+6 buy_goods出现-4错误，将云平台出口IP加到openapi白名单中iplist.txt
+	203.195.131.58
+	203.195.131.116
+7 雷霆战机出现100044错误
+8 100733645添加1040权限
+
+curl "http://10.185.8.28/cgi-bin/mapp/mq_whitelist_set" -d "appid=1000001286&uins=1106648731,2417488,626510352,330258845,759777219,331485877,648378788,7695013,524452835,348944179,13793107,10953568,343589765,786229186,458871138,54387850,1937045,491956507,343911969,39697155,283579029,1428703373"
+
+
+2014-10-21
+1 openid 批量转 uin
+	给MIG移动互联网同事开通mqzone权限
+	ref = newbee
+	appkey = 34ba875290644b5589da33efff9bcd1d
+
+2 openapi gw 返回-73
+	引导用户查看wiki(此返回码表示用户修改了QQ密码，导致Access Token失效，需要引导用户重新登陆。)
+
+3 出现100044
+	没有apk签名
+
+4 客户询问app审核驳回原因,转告审核人员
+	appid:100566579  
+	原因：QQ登录后无法返回网站首页
+
+5 用户授权信息定制
+	scope参数 不要传all 传你要的那些接口 以逗号分隔
+
+
+6 UID+appid 转 UIN
+
+
+	
+7 下发cgi配置	
+ 	【OpenAPI】反垃圾接口申请接入
+
+ 	【OpenAPI】手Q健康中心接入第三方应用的数据
+
+ 	【OpenAPI】游戏在线、下线上报API（来自增值产品部）
+
+ 	【OpenAPI】58换取临时会话wpa code接入
+
+
+20141031
+1 
+	appid：801183612
+	应用宝id  281078
+2 农场牧场添加。
+3 腾讯盒子 关于openid转uin的疑问。
+4 AppId 1000001965 移动支付接口
+5 scope的疑问，默认是all，拉取所有授权列表，也可以填入要拉取的列表，逗号分隔
+6 1000002005 调用is_login没有权限，开通站内权限。
+
+
+20141112
+1 溅溅水珠  1103409567   亲  帮开下 826  827分组权限哈
+2 101163185封锁地域 openid转uin
+3 农场牧场
+4 新用户使用qq登陆失败，返回100024 
+	authorize逻辑有误，如果tmen没有数据则判定为错误返回给前端
+	测试环境10.136.170.26
+
+	curl -i -k -d "response_type=token&client_id=100388467&redirect_uri=http%3A%2F%2Fhon.qq.com%2Fjh%2Fuser%2Fqccallback.php&scope=all&state=&src=1&update_auth=0&openapi=80901010&g_tk=967770456&auth_time=1415606895879&ui=E51AFDE9-DC47-4603-AB6F-EBAF5B7A8B4F" "https://10.136.170.26/oauth2.0/authorize" -b "uin=o3143217282; skey=@2Ar2rcZTy"
+
+iphone sdk的找opensdkhelper_ios
+
+20141124
+1 http://openmobile.qq.com/api/share_qzone 分享成功但评论被截断
+	summary有长度限制，80个字节
+2 100302037 添加pc弹tips图标
+  100466955 cdn添加图标失败
+  	cdn的机器出了问题，已经手动切换到另一台机器。
+
+3 token返回100004 param grant_type is wrong or lost
+	沒有帶grant_type參數，為什麼不看錯誤信息！
+
+4 sdk使用h5的登陆页面，需要申请白名单，找simonyang
+
+5 跟进游戏获取好友列表失败的问题。
+	失败率不高，集中在19点左右，网络抖动，建议游戏优化重试机制。
+
+
+http://openapi.qzone.qq.com/oauth/show?which=ConfirmPage&display=pc&response_type=code&client_id=101169527&redirect_uri=http%3A%2F%2Fwww.yyqianqian.com%2Fapi%2Fqq%2Fqq_return.php&state=3669da714d41b725ed29a9234de8c6d7&scope=get_user_info
+
+http://www.yyqianqian.com/api/qq/qq_return.php?code=1B56217426C57C2AA01BE10DB62C9CB4&state=3669da714d41b725ed29a9234de8c6d7
+
+20141204
+1 appid：100703379 解绑群
+2 关于一些知识的问答
+3 一些权限的开通
+
+20141216
+1 ZF (1103529763)关系链权限的开放
+
+2 发布cgi玩吧预约送礼物openapi
+
+3 其他零碎问题。
+
+20141225
+1 开平ID转应用宝ID
+2 目前开放平台有没有一个接口，可以通过QQ号和aapid查openid的
+	trans_openinfo
+3 网站应用100312202  切换开发商571082390名下，并且打通两个appid
+移动应用APPid  1103442590
+网页应用APPID  100312202（v_chunyanli）
+4 其他oidb询问
+
+20140107
+1 询问广州机房访问oidb，指导找simon提需求。
+2 访问mqzone接口，提示没权限，申请refappkey 下发配置ip，appid，配置dns。
+http://tapd.oa.com/AppBase/wikis/view/%2525E5%2525BC%252580%2525E6%252594%2525BE%2525E5%2525B9%2525B3%2525E5%25258F%2525B0Mqzone%2525E6%25258E%2525A5%2525E5%252585%2525A5%2525E6%25258C%252587%2525E5%2525BC%252595
+3 情况是这样的，这个游戏原本是open那边的老游戏，大概6月份左右的时候迁移到dev想接MSDK，之前没有直接迁移的流程，而是在dev注册相同appid和key的游戏，当时appid填对了，key没填对。导致现在联通有问题
+不支持换appkey 
+4 外链跳转
+http://opensns.cm.com/openapi/appoutside.php 加上根域名 appid 1101245335
+5 1103298288_1101004155_100997700_1101327723_1102927398_100910396_1101348641_1101285762_100963571_100839103   你好，一批应用ID麻烦帮转一下应用宝ID，辛苦！
+
+
+20150116
+1 1000001092天天来战开权限
+	/v3/user/friends_vip_info
+2 对应包名 tiange.sina.voice
+	现在确定要求APP ID:100397058 和 该包名 绑定
+3 1103750799麻烦转应用宝id
+4 1103471968开权限
+v3/user/myapp_user_award
+5 我们有一个用户通过QQ登录，我们保存了他的QQ的id，现在他忘记了他的QQ号。我能否提供他的QQid，你们帮忙查一下他的QQ号，现在用户在投诉，希望你们能支持。
+  appid是209207，openid是185922a73892b44f4877174d7e1ec7ed
+6  调用接口http://openapi.qzone.qq.com/user/get_oauth2_token，目前对接返回总是为：{
+    "ret": 30005,
+    "msg": "verify oauth_timestamp failed"
+引导用户重新登陆
+7 APP ID： 101178699
+	https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101178699&redirect_uri=wy.guahao.com&state=111
+	审核没通过，找一下v_chunyanli 审核通过
+	http://qconnadmin.oa.com/cmem_datasource?m=release&a=key_edit&json={%22source%22:{%22id%22:8},%22key%22:%22101178699_1%22}查现网
+
+20150127
+1 trans_openid_uin配置下发调用量：
+ref：tencentmap
+appkey：f9db4c62d6764ec88df46a6da89d8114
+调用方机器：
+测试：172.18.48.114    10.130.136.179
+正式：10.130.129.166   10.130.129.167  10.135.32.98   10.137.130.228
+
+2 http://openapi.qzone.qq.com/oauth/show?which=Login&display=pc&auth_time=&page_type=&viewPage=&client_id=101008239&redirect_uri=http://www.renrenmoney.com/qqCallback.do&scope=get_user_info,list_album,upload_pic,do_like&response_type=code 
+
+3 春节礼包，设置礼包状态接口set_pack_used，接入开平
+
+4 v3/user/get_info 这个open api给到的 qzone头像一直是用thirdapp1.qlogo.cn这个域名吗
+	http://thirdapp0.qlogo.cn
+5 确认下，开平的accesstoken就是调0x711  的 21去验证的吧 
+	是
+
+6 各种开权限
+
+20150205
+1 你好，我有两个应用程序，在没有安装手q的手机上， 进行登录， 会出现上面两个不同的表现。 是要在开放平台上注册app的时候做什么设置吗？
+	现在的逻辑是这样的 
+	1 默认需要唤起手q，如果没有手q则提示下载手q
+	2 开白名单，无手q也可以使用h5登陆
+	3 白名单找simonyang申请
+
+2 v_xyhhu(胡夕颜) 02-05 09:53:01
+   奔跑吧机甲  1104129880    826  827  
+   开权限
+
+3 1101772573_1103392144_1103755424_1101168554_100877589_1101079890_1103841098_101117295_100726924   你好，一批应用ID麻烦帮转一下应用宝ID
+
+4   2996735100
+	2485353543
+	1990229828
+	2562313874
+	2723956425
+	3082936249
+	2797023659
+	3144744624
+	3085372858
+	3145593054
+	2041173494
+	3144705007
+	3144813907
+麻烦你清理下QQ审核授权记录 ，谢谢
+
+5 1000001897
+v3/user/myapp_user_award 
+妹纸求开
+
+6 联盟ID:8103022
+群号：24721081
+解绑重新绑定
+
+7 hello openapi
+我们调用获取公会相关信息接口get_group_info的时候，如果群已经解散了，该接口的返回应该是2007，但是实际返回是2100
+看了代码，这里确实有个逻辑的问题
+	1 oidb解散一个群会push信息过来
+	2 开平接到信息会从我们这边维护的数据库中删除这样一个数据
+	3 代码先去查数据库，查不到数据会直接返回2100
+	所以这里可能要修改下代码。
+
+8 101008239
+https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&state=2BB950EE8C874EC9A97FBB47B67BA0C9&client_id=101008239&client_secret=8e18cecd45fc710c110552eb23b58221&code=2BB950EE8C874EC9A97FBB47B67BA0C9&redirect_uri=http://www.renrenmoney.com/qqCallback.do
+报callback( {"error":100019,"error_description":"code to access token error"} );
+告知code被重复使用，用户坚持只使用过一次，未说服，需要继续跟进。
+
+20150216
+1 朋友在问，通过一个注册认证过了的应用，分享信息到 gammergr 这个号的朋友圈。
+只有gammergr这个号自己能看到分享出来的信息，其它的好友看不到分享的信息这个问题。谁能帮忙解答？
+ seek那边做了限制
+ 每分钟不超过5条，每小时不超过20，每天不超过100
